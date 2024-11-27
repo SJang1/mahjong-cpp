@@ -1,7 +1,13 @@
 // 승리조건 체크 CPP 파일. ChatGPT의 도움으로 완성.
 
 #include "std.h"
-
+// Winning 계산을 위한 알고리즘.
+#include <map>
+#include <algorithm>
+#include <unordered_map>
+#include <sstream> 
+#include <string>
+// Winning 계산을 위한 알고리즘 끝.
 
 void getTileInfo(int priority, std::string& suit, int& number) {
     if (priority >= 1 && priority <= 9) {
