@@ -11,22 +11,29 @@ int main()
 
 	while (true)
 	{
-		system("CLS");
+		cout << endl;
+		cout << endl;
+
 		game.Print_Reach_Users();
 		game.sort();
 		game.print_thrown_tiles();
-		game.print_my_tiles();
-		if(!game.get_newTile())
-			break;
-		game.print_my_newTile();
-		//game.checkWinningPrint();
-		bool res = game.throw_tile();
-		if (!res)
-		{
-			cout << "게임 승리입니다" << endl;
+		game.print_ai_tiles();
+		if (!game.get_newTile()) {
+			game.endGame();
 			break;
 		}
-			
+		cout << endl;
+		game.print_my_tiles(true);
+		game.print_my_newTile();
+		bool res = game.throw_tile();
+		if (!res) {
+			game.endGame();
+			break;
+		}
+
+		if (!game.processAITurns()) {
+			break;  // endGame은 이미 호출되었음
+		}
 	}
 	return 0;
 }
