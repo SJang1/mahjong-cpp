@@ -197,6 +197,36 @@ void Game::sort()
 			}
 		}
 	}
+	for (int i = 0; i < player2.size(); i++)
+	{
+		for (int j = 0; j < player2.size() - 1; j++)
+		{
+			if (player2[j]->getPriority() > player2[j + 1]->getPriority())
+			{
+				swap(player2[j], player2[j + 1]);
+			}
+		}
+	}
+	for (int i = 0; i < player3.size(); i++)
+	{
+		for (int j = 0; j < player3.size() - 1; j++)
+		{
+			if (player3[j]->getPriority() > player3[j + 1]->getPriority())
+			{
+				swap(player3[j], player3[j + 1]);
+			}
+		}
+	}
+	for (int i = 0; i < player4.size(); i++)
+	{
+		for (int j = 0; j < player4.size() - 1; j++)
+		{
+			if (player4[j]->getPriority() > player4[j + 1]->getPriority())
+			{
+				swap(player4[j], player4[j + 1]);
+			}
+		}
+	}
 }
 
 bool Game::get_newTile()
