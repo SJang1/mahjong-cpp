@@ -16,6 +16,46 @@ Game::Game()
 
 }
 
+
+void Print_Tiles(const Tiles* tile)
+{
+
+	int color = 0;
+	// 0: 검정, 1: 파랑, 2: 녹색, 3: 하늘색, 4: 빨강, 5: 자주, 6: 노랑, 7: 흰색, 8: 회색, 9: 파랑, 10: 녹색, 11: 하늘색, 12: 빨강, 13: 자주, 14: 노랑, 15: 흰색
+	if (tile->getName().find("M") != string::npos)
+		color = 4;
+	else if (tile->getName().find("P") != string::npos)
+		color = 1;
+	else if (tile->getName().find("S") != string::npos)
+		color = 2;
+	else if (tile->getName().find("Z") != string::npos)
+		color = 3;
+
+	CONSOLE_SCREEN_BUFFER_INFO buff;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &buff);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),
+		(buff.wAttributes & 0xf0) | (color & 0xf));
+	cout << tile->getReadableName() << " ";
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+}
+
+void Game::Print_Reach_Users()
+{
+	cout << "현재 리치 상태인 사용자: ";
+	int reach_users = 0;
+	for (int i = 0; i < players.size(); i++)
+	{
+		if (players[i]->getReach())
+		{
+			cout << players[i]->getName() << " ";
+			reach_users++;
+		}
+	}
+	if (reach_users == 0)
+		cout << "없음";
+	cout << endl;
+}
+
 bool Game::Start_Remove_14()
 {
 	for (int i = 0; i < 14; i++)
@@ -98,14 +138,14 @@ void Game::print_my_tiles()
 	cout << "플레이어 1의 타일: ";
 	for (int i = 0; i < player1.size(); i++)
 	{
-		cout << player1[i]->getReadableName() << " ";
+		Print_Tiles(player1[i]);
+		cout << " ";
 	}
 
 }
 
 void Game::print_thrown_tiles()
 {
-	system("CLS");
 	cout << "버려진 타일: ";
 	if (throwntiles.empty())
 	{
@@ -162,15 +202,17 @@ bool Game::throw_tile()
 
 		if (checkWinningPrint())
 		{
-			if (player1.size() != 14) {
+			if (player1.size() != 14) { // 지금 막 리치하면서 타패한 경우
 				return true;
 			}
-			if (Winning::isWinningHand(player1))
+			if (players[0]->getWin()) // 화료처리를 했으니 아무것도 안하고 끝내기
 				return false;
-			throwntiles.push_back(player1.back());
+			throwntiles.push_back(player1.back()); // 리치 상태인 경우
 			player1.pop_back();
 			return true;
 		}
+
+		// 리치나 화료 둘 다 아닌 경우
 		string throw_tile;
 		cout << "타패할 (버릴) 타일을 골라주세요: ";
 		cin >> throw_tile;
@@ -208,7 +250,12 @@ bool Game::checkWinningPrint()
 				players[0]->setWin();
 				return true;
 			}
-			else if (answer == 'N' || answer == 'n')
+			else if ((answer == 'N' || answer == 'n') && players[0]->getReach())
+			{
+				cout << "리치 상태에서 화료를 하지 않습니다. 게임을 계속합니다." << endl;
+				return true;
+			}
+			else if ((answer == 'N' || answer == 'n') && !players[0]->getReach())
 			{
 				cout << "게임을 계속합니다." << endl;
 				return false;

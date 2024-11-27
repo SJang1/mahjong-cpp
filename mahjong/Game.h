@@ -13,6 +13,8 @@ private:
 
 public:
 	Game();
+	void Print_Reach_Users();
+
 	bool Start_Remove_14();
 	bool Disturb_Tiles(int _count, int _repeat);
 

@@ -1,4 +1,8 @@
+// 승리조건 체크 CPP 파일. ChatGPT의 도움으로 완성.
+
 #include "std.h"
+
+
 void getTileInfo(int priority, std::string& suit, int& number) {
     if (priority >= 1 && priority <= 9) {
         suit = "man"; // 만수패

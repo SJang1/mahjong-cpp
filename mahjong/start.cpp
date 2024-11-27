@@ -11,6 +11,8 @@ int main()
 
 	while (true)
 	{
+		system("CLS");
+		game.Print_Reach_Users();
 		game.sort();
 		game.print_thrown_tiles();
 		game.print_my_tiles();
